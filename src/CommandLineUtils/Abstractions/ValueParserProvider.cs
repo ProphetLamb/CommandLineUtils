@@ -59,7 +59,7 @@ namespace McMaster.Extensions.CommandLineUtils.Abstractions
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public IValueParser GetParser(Type type)
+        public IValueParser GetParser([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type)
         {
             var method = s_getParserGeneric.MakeGenericMethod(type);
             return (IValueParser)method.Invoke(this, Array.Empty<object>())!;

@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using McMaster.Extensions.CommandLineUtils.Abstractions;
@@ -15,7 +16,7 @@ namespace McMaster.Extensions.CommandLineUtils
     /// parsable into type <typeparamref name="T" />
     /// </summary>
     /// <typeparam name="T">The type of the option value(s)</typeparam>
-    public class CommandOption<T> : CommandOption, IInternalCommandParamOfT
+    public class CommandOption<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T> : CommandOption, IInternalCommandParamOfT
     {
         private readonly List<T> _parsedValues = new();
         private readonly IValueParser<T> _valueParser;

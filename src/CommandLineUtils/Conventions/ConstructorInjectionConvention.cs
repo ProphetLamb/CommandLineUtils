@@ -12,6 +12,7 @@ namespace McMaster.Extensions.CommandLineUtils.Conventions
     /// Uses an instance of <see cref="IServiceProvider" /> to call constructors
     /// when creating models.
     /// </summary>
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
     public class ConstructorInjectionConvention : IConvention
     {
         private readonly IServiceProvider? _additionalServices;
