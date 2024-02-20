@@ -1,6 +1,16 @@
 <Project>
   <PropertyGroup>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <IsTrimmable>true</IsTrimmable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <PublishTrimmed>true</PublishTrimmed>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
 
 </Project>
