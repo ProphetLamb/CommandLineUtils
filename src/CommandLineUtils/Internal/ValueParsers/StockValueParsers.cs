@@ -40,7 +40,7 @@ namespace McMaster.Extensions.CommandLineUtils.Abstractions
         public static readonly IValueParser<string?> String = ValueParser.Create((_, value, __) => value);
 
         public static readonly IValueParser<Uri> Uri = ValueParser.Create(
-            (_, value, culture) => new Uri(value, UriKind.RelativeOrAbsolute));
+            (_, value, culture) => new Uri(value ?? "", UriKind.RelativeOrAbsolute));
 
         private static FormatException InvalidValueException(string? argName, string specifics) =>
             new($"Invalid value specified for {argName}. {specifics}");

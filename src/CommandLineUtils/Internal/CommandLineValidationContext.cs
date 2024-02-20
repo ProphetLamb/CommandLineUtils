@@ -3,6 +3,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace McMaster.Extensions.CommandLineUtils
 {
@@ -15,10 +16,13 @@ namespace McMaster.Extensions.CommandLineUtils
             _app = app ?? throw new ArgumentNullException(nameof(app));
         }
 
+        [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026:RequiresUnreferencedCode", Justification = "Model type requires all members dynamically accessible.")]
         public ValidationContext Create(CommandLineApplication app) => new(app, _app, null);
 
+        [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026:RequiresUnreferencedCode", Justification = "Model type requires all members dynamically accessible.")]
         public ValidationContext Create(CommandArgument argument) => new(argument, _app, null);
 
+        [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026:RequiresUnreferencedCode", Justification = "Model type requires all members dynamically accessible.")]
         public ValidationContext Create(CommandOption option) => new(option, _app, null);
     }
 }

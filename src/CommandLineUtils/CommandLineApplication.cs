@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -242,7 +243,7 @@ namespace McMaster.Extensions.CommandLineUtils
         public IReadOnlyList<CommandArgument> Arguments => _arguments;
 
         /// <summary>
-        /// When initialized when <see cref="UnrecognizedArgumentHandling"/> is <see cref="McMaster.Extensions.CommandLineUtils.UnrecognizedArgumentHandling.StopParsingAndCollect" />,
+        /// When initialized when <see cref="UnrecognizedArgumentHandling"/> is <see cref="UnrecognizedArgumentHandling.StopParsingAndCollect" />,
         /// this will contain any unrecognized arguments.
         /// </summary>
         public IReadOnlyList<string> RemainingArguments => _remainingArguments;
@@ -287,7 +288,7 @@ namespace McMaster.Extensions.CommandLineUtils
         /// A response file contains additional arguments that will be treated as if they were passed in on the command line.
         /// </para>
         /// <para>
-        /// Defaults to <see cref="McMaster.Extensions.CommandLineUtils.ResponseFileHandling.Disabled" />.
+        /// Defaults to <see cref="ResponseFileHandling.Disabled" />.
         /// </para>
         /// <para>
         /// Nested response false are not supported.
@@ -502,7 +503,7 @@ namespace McMaster.Extensions.CommandLineUtils
         /// <param name="configuration">A callback used to configure the subcommand object.</param>
         /// <typeparam name="TModel">The model type of the subcommand.</typeparam>
         /// <returns></returns>
-        public CommandLineApplication<TModel> Command<TModel>(string name, Action<CommandLineApplication<TModel>> configuration)
+        public CommandLineApplication<TModel> Command<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TModel>(string name, Action<CommandLineApplication<TModel>> configuration)
             where TModel : class
         {
             var command = new CommandLineApplication<TModel>(this, name);
@@ -586,7 +587,7 @@ namespace McMaster.Extensions.CommandLineUtils
         /// <param name="inherited"></param>
         /// <typeparam name="T">The type of the values on the option</typeparam>
         /// <returns>The option</returns>
-        public CommandOption<T> Option<T>(string template, string description, CommandOptionType optionType, Action<CommandOption<T>> configuration, bool inherited)
+        public CommandOption<T> Option<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(string template, string description, CommandOptionType optionType, Action<CommandOption<T>> configuration, bool inherited)
         {
             var parser = ValueParsers.GetParser<T>();
 
@@ -650,7 +651,7 @@ namespace McMaster.Extensions.CommandLineUtils
         /// <param name="multipleValues"></param>
         /// <typeparam name="T">The type of the values on the option</typeparam>
         /// <returns></returns>
-        public CommandArgument<T> Argument<T>(string name, string description, Action<CommandArgument<T>> configuration, bool multipleValues = false)
+        public CommandArgument<T> Argument<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(string name, string description, Action<CommandArgument<T>> configuration, bool multipleValues = false)
 #pragma warning restore RS0026 // Do not add multiple public overloads with optional parameters
         {
             var parser = ValueParsers.GetParser<T>();
@@ -870,7 +871,7 @@ namespace McMaster.Extensions.CommandLineUtils
 
             var handlerCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
-            void cancelHandler(object o, ConsoleCancelEventArgs e)
+            void cancelHandler(object? o, ConsoleCancelEventArgs e)
             {
                 handlerCancellationTokenSource.Cancel();
             }
@@ -1146,7 +1147,7 @@ namespace McMaster.Extensions.CommandLineUtils
 
         internal IServiceProvider? AdditionalServices { get; set; }
 
-        object IServiceProvider.GetService(Type serviceType) => _services.Value.GetService(serviceType);
+        object IServiceProvider.GetService(Type serviceType) => _services.Value.GetService(serviceType)!;
 
         private sealed class ServiceProvider : IServiceProvider
         {

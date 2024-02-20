@@ -59,7 +59,7 @@ namespace McMaster.Extensions.CommandLineUtils
                     }
                 }
 
-                return (ValidationResult)method.Invoke(modelAccessor.GetModel(), arguments);
+                return (ValidationResult)method.Invoke(modelAccessor.GetModel(), arguments)!;
             });
         }
     }

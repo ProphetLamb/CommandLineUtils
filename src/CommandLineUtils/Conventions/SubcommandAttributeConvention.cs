@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using McMaster.Extensions.CommandLineUtils.Abstractions;
@@ -10,7 +11,7 @@ using McMaster.Extensions.CommandLineUtils.Errors;
 namespace McMaster.Extensions.CommandLineUtils.Conventions
 {
     /// <summary>
-    /// Creates a subcommand for each <see cref="McMaster.Extensions.CommandLineUtils.SubcommandAttribute"/>
+    /// Creates a subcommand for each <see cref="SubcommandAttribute"/>
     /// on the model type of <see cref="CommandLineApplication{TModel}"/>.
     /// </summary>
     public class SubcommandAttributeConvention : IConvention
@@ -64,7 +65,7 @@ namespace McMaster.Extensions.CommandLineUtils.Conventions
             = typeof(SubcommandAttributeConvention).GetRuntimeMethods()
                 .Single(m => m.Name == nameof(AddSubcommandImpl));
 
-        private void AddSubcommandImpl<TSubCommand>(ConventionContext context)
+        private void AddSubcommandImpl<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TSubCommand>(ConventionContext context)
             where TSubCommand : class
         {
             context.Application.Command<TSubCommand>(null!, null!); // Hmm, should probably rethink this...

@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 
@@ -82,7 +83,7 @@ namespace McMaster.Extensions.CommandLineUtils
             string resp;
             using (ShowCursor())
             {
-                resp = Console.ReadLine();
+                resp = Console.ReadLine() ?? "";
             }
 
             return !string.IsNullOrEmpty(resp)
@@ -284,7 +285,7 @@ namespace McMaster.Extensions.CommandLineUtils
             {
                 try
                 {
-                    _original = Console.CursorVisible;
+                    _original = !RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || Console.CursorVisible;
                 }
                 catch
                 {

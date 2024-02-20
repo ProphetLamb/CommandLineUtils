@@ -3,6 +3,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using McMaster.Extensions.CommandLineUtils.Validation;
 
 namespace McMaster.Extensions.CommandLineUtils
@@ -333,6 +334,7 @@ namespace McMaster.Extensions.CommandLineUtils
         /// <param name="length">The minimum length.</param>
         /// <param name="errorMessage">A custom error message to display.</param>
         /// <returns>The builder.</returns>
+        [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026:RequiresUnreferencedCode", Justification = $"The {nameof(CommandAttribute)} requires all members of the underlying type dynamically accessible.")]
         public static IValidationBuilder MinLength(this IValidationBuilder builder, int length, string? errorMessage = null)
             => builder.Satisfies(new MinLengthAttribute(length), errorMessage);
 
@@ -343,6 +345,7 @@ namespace McMaster.Extensions.CommandLineUtils
         /// <param name="length">The maximum length.</param>
         /// <param name="errorMessage">A custom error message to display.</param>
         /// <returns>The builder.</returns>
+        [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026:RequiresUnreferencedCode", Justification = $"The {nameof(CommandAttribute)} requires all members of the underlying type dynamically accessible.")]
         public static IValidationBuilder MaxLength(this IValidationBuilder builder, int length, string? errorMessage = null)
             => builder.Satisfies(new MaxLengthAttribute(length), errorMessage);
 
@@ -364,7 +367,7 @@ namespace McMaster.Extensions.CommandLineUtils
         /// <param name="ctorArgs">Constructor arguments for <typeparamref name="TAttribute"/>.</param>
         /// <param name="errorMessage">A custom error message to display.</param>
         /// <returns>The builder.</returns>
-        public static IValidationBuilder Satisfies<TAttribute>(this IValidationBuilder builder, string? errorMessage = null, params object[] ctorArgs)
+        public static IValidationBuilder Satisfies<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TAttribute>(this IValidationBuilder builder, string? errorMessage = null, params object[] ctorArgs)
             where TAttribute : ValidationAttribute
         {
             var attribute = GetValidationAttr<TAttribute>(errorMessage, ctorArgs);
@@ -452,10 +455,10 @@ namespace McMaster.Extensions.CommandLineUtils
             return builder;
         }
 
-        private static T GetValidationAttr<T>(string? errorMessage, object[]? ctorArgs = null)
+        private static T GetValidationAttr<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(string? errorMessage, object[]? ctorArgs = null)
             where T : ValidationAttribute
         {
-            var attribute = (T)Activator.CreateInstance(typeof(T), ctorArgs ?? new object[0]);
+            var attribute = (T)Activator.CreateInstance(typeof(T), ctorArgs ?? new object[0])!;
             if (errorMessage != null)
             {
                 attribute.ErrorMessage = errorMessage;

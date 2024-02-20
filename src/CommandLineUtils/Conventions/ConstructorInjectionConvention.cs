@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 
@@ -50,7 +51,7 @@ namespace McMaster.Extensions.CommandLineUtils.Conventions
         private static readonly MethodInfo s_applyMethod
          = typeof(ConstructorInjectionConvention).GetRuntimeMethods().Single(m => m.Name == nameof(ApplyImpl));
 
-        private void ApplyImpl<TModel>(ConventionContext context)
+        private void ApplyImpl<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TModel>(ConventionContext context)
             where TModel : class
         {
             var constructors = typeof(TModel).GetConstructors(BindingFlags.Public | BindingFlags.Instance);
@@ -96,7 +97,7 @@ namespace McMaster.Extensions.CommandLineUtils.Conventions
 
                         return () =>
                             throw new InvalidOperationException(
-                                Strings.NoParameterTypeRegistered(ctorCandidate.DeclaringType, paramType));
+                                Strings.NoParameterTypeRegistered(ctorCandidate.DeclaringType!, paramType));
                     }
 
                     args[i] = service;

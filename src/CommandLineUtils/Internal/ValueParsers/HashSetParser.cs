@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
 
@@ -11,6 +12,8 @@ namespace McMaster.Extensions.CommandLineUtils.Abstractions
     internal class HashSetParser : ICollectionParser
     {
         private readonly IValueParser _elementParser;
+
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.All)]
         private readonly Type _listType;
         private readonly MethodInfo _addMethod;
         private readonly CultureInfo _parserCulture;
@@ -19,13 +22,13 @@ namespace McMaster.Extensions.CommandLineUtils.Abstractions
         {
             _elementParser = elementParser;
             _listType = typeof(HashSet<>).MakeGenericType(elementType);
-            _addMethod = _listType.GetRuntimeMethod("Add", new[] { elementType });
+            _addMethod = _listType.GetRuntimeMethod("Add", new[] { elementType })!;
             _parserCulture = parserCulture;
         }
 
         public object Parse(string? argName, IReadOnlyList<string?> values)
         {
-            var set = Activator.CreateInstance(_listType, Array.Empty<object>());
+            var set = Activator.CreateInstance(_listType, Array.Empty<object>())!;
             foreach (var t in values)
             {
                 _addMethod.Invoke(set, new[] { _elementParser.Parse(argName, t, _parserCulture) });

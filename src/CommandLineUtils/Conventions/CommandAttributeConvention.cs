@@ -11,7 +11,7 @@ namespace McMaster.Extensions.CommandLineUtils.Conventions
     /// <summary>
     /// Adds settings from <see cref="CommandAttribute" /> and <see cref="ValidationAttribute"/> set on the model type for <see cref="CommandLineApplication{TModel}" />.
     /// </summary>
-    /// <seealso cref="McMaster.Extensions.CommandLineUtils.Conventions.IConvention" />
+    /// <seealso cref="IConvention" />
     public class CommandAttributeConvention : IConvention
     {
         /// <summary>

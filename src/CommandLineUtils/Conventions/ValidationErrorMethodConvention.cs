@@ -34,7 +34,7 @@ namespace McMaster.Extensions.CommandLineUtils.Conventions
                 var result = method.Invoke(modelAccessor.GetModel(), arguments);
                 if (method.ReturnType == typeof(int))
                 {
-                    return (int)result;
+                    return (int)result!;
                 }
 
                 return CommandLineApplication.ValidationErrorExitCode;

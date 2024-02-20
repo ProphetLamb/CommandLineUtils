@@ -25,11 +25,11 @@ namespace McMaster.Extensions.CommandLineUtils
             }
             else
             {
-                var backingField = prop.DeclaringType.GetField($"<{prop.Name}>k__BackingField", DeclaredOnlyLookup);
+                var backingField = prop.DeclaringType?.GetField($"<{prop.Name}>k__BackingField", DeclaredOnlyLookup);
                 if (backingField == null)
                 {
                     throw new InvalidOperationException(
-                        $"Could not find a way to set {prop.DeclaringType.FullName}.{prop.Name}. Try adding a private setter.");
+                        $"Could not find a way to set {prop.DeclaringType?.FullName}.{prop.Name}. Try adding a private setter.");
                 }
 
                 return (obj, value) => backingField.SetValue(obj, value);
@@ -45,7 +45,7 @@ namespace McMaster.Extensions.CommandLineUtils
             }
             else
             {
-                var backingField = prop.DeclaringType.GetField($"<{prop.Name}>k__BackingField", DeclaredOnlyLookup);
+                var backingField = prop.DeclaringType?.GetField($"<{prop.Name}>k__BackingField", DeclaredOnlyLookup) ?? throw new InvalidOperationException($"Could not get backing field for property {prop}");
                 if (backingField == null)
                 {
                     throw new InvalidOperationException(
@@ -56,25 +56,26 @@ namespace McMaster.Extensions.CommandLineUtils
             }
         }
 
-        public static MethodInfo[] GetPropertyOrMethod(Type type, string name)
+        public static MethodInfo[] GetPropertyOrMethod([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type, string name)
         {
             var members = GetAllMembers(type).ToList();
             return members
                 .OfType<MethodInfo>()
                 .Where(m => m.Name == name)
                 .Concat(members.OfType<PropertyInfo>().Where(m => m.Name == name).Select(p => p.GetMethod))
+                .Cast<MethodInfo>()
                 .Where(m => m.ReturnType == typeof(string) && m.GetParameters().Length == 0)
                 .ToArray();
         }
 
-        public static PropertyInfo[] GetProperties(Type type)
+        public static PropertyInfo[] GetProperties([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type)
         {
             return GetAllMembers(type)
                 .OfType<PropertyInfo>()
                 .ToArray();
         }
 
-        public static MemberInfo[] GetMembers(Type type)
+        public static MemberInfo[] GetMembers([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type)
         {
             return GetAllMembers(type).ToArray();
         }
@@ -146,7 +147,7 @@ namespace McMaster.Extensions.CommandLineUtils
             return result;
         }
 
-        private static IEnumerable<MemberInfo> GetAllMembers(Type type)
+        private static IEnumerable<MemberInfo> GetAllMembers([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type? type)
         {
             while (type != null)
             {

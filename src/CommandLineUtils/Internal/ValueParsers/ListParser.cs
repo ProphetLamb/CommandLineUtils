@@ -4,6 +4,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace McMaster.Extensions.CommandLineUtils.Abstractions
@@ -12,6 +13,7 @@ namespace McMaster.Extensions.CommandLineUtils.Abstractions
     internal class ListParser : ICollectionParser
     {
         private readonly IValueParser _elementParser;
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
         private readonly Type _listType;
         private readonly CultureInfo _parserCulture;
 
@@ -24,7 +26,7 @@ namespace McMaster.Extensions.CommandLineUtils.Abstractions
 
         public object Parse(string? argName, IReadOnlyList<string?> values)
         {
-            var list = (IList)Activator.CreateInstance(_listType, new object[] { values.Count });
+            var list = (IList)Activator.CreateInstance(_listType, new object[] { values.Count })!;
             foreach (var t in values)
             {
                 list.Add(_elementParser.Parse(argName, t, _parserCulture));

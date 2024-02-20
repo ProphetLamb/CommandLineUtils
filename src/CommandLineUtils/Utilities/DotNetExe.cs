@@ -45,7 +45,7 @@ namespace McMaster.Extensions.CommandLineUtils
             var fileName = FileName;
 #if NET46_OR_GREATER
             fileName += ".exe";
-#elif NETSTANDARD2_0_OR_GREATER
+#elif NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 fileName += ".exe";

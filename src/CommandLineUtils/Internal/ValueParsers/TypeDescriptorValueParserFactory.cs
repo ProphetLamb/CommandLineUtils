@@ -14,10 +14,12 @@ namespace McMaster.Extensions.CommandLineUtils.Abstractions
     /// </summary>
     internal class TypeDescriptorValueParserFactory
     {
-        public bool TryGetParser<T>([NotNullWhen(true)] out IValueParser? parser)
+        [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026:RequiresUnreferencedCode", Justification = "Generic type requires all members dynamically accessible.")]
+        public bool TryGetParser<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>([NotNullWhen(true)] out IValueParser? parser)
         {
             var targetType = typeof(T);
             var converter = TypeDescriptor.GetConverter(targetType);
+
             if (converter.CanConvertFrom(typeof(string)))
             {
                 parser = new TypeConverterValueParser<T>(targetType, converter);
@@ -45,7 +47,7 @@ namespace McMaster.Extensions.CommandLineUtils.Abstractions
                 try
                 {
                     culture ??= CultureInfo.InvariantCulture;
-                    return (T)TypeConverter.ConvertFromString(null, culture, value);
+                    return (T)TypeConverter.ConvertFromString(null, culture, value ?? "")!;
                 }
                 catch (ArgumentException e)
                 {

@@ -38,7 +38,7 @@ namespace McMaster.Extensions.CommandLineUtils
         /// <summary>
         /// The parsed value.
         /// </summary>
-        public T ParsedValue => ParsedValues.FirstOrDefault();
+        public T ParsedValue => ParsedValues.FirstOrDefault()!;
 
         /// <summary>
         /// All parsed values;

@@ -19,7 +19,7 @@ namespace McMaster.Extensions.CommandLineUtils
         {
             if (type.IsArray)
             {
-                var elementType = type.GetElementType();
+                var elementType = type.GetElementType()!;
                 var elementParser = valueParsers.GetParser(elementType);
 
                 return new ArrayParser(elementType, elementParser, valueParsers.ParseCulture);

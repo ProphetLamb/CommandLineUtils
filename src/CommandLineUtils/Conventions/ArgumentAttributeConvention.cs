@@ -151,7 +151,7 @@ namespace McMaster.Extensions.CommandLineUtils.Conventions
                     if (r.SelectedCommand is IModelAccessor cmd)
                     {
                         var model = cmd.GetModel();
-                        if (prop.DeclaringType.IsAssignableFrom(model.GetType()))
+                        if (prop.DeclaringType!.IsAssignableFrom(model.GetType()))
                         {
                             if (argument.Values.Count == 0)
                             {

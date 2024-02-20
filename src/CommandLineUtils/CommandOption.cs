@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using McMaster.Extensions.CommandLineUtils.Validation;
@@ -137,6 +138,7 @@ namespace McMaster.Extensions.CommandLineUtils
         /// <summary>
         /// Defines the underlying type of the option for the help-text-generator
         /// </summary>
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
         internal Type? UnderlyingType { get; set; }
 
         /// <summary>

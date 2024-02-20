@@ -9,7 +9,7 @@ using System.IO;
 namespace McMaster.Extensions.CommandLineUtils
 {
     /// <summary>
-    /// An implementation of <see cref="IConsole"/> that wraps <see cref="System.Console"/>.
+    /// An implementation of <see cref="IConsole"/> that wraps <see cref="Console"/>.
     /// </summary>
     public class PhysicalConsole : IConsole
     {

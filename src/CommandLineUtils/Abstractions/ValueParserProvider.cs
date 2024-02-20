@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -61,7 +62,7 @@ namespace McMaster.Extensions.CommandLineUtils.Abstractions
         public IValueParser GetParser(Type type)
         {
             var method = s_getParserGeneric.MakeGenericMethod(type);
-            return (IValueParser)method.Invoke(this, Array.Empty<object>());
+            return (IValueParser)method.Invoke(this, Array.Empty<object>())!;
         }
 
         /// <summary>
@@ -72,7 +73,7 @@ namespace McMaster.Extensions.CommandLineUtils.Abstractions
         /// </remarks>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public IValueParser<T>? GetParser<T>()
+        public IValueParser<T>? GetParser<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>()
         {
             var parser = GetParserImpl<T>();
             return parser switch
@@ -83,7 +84,7 @@ namespace McMaster.Extensions.CommandLineUtils.Abstractions
             };
         }
 
-        internal IValueParser? GetParserImpl<T>()
+        internal IValueParser? GetParserImpl<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>()
         {
             var type = typeof(T);
             if (_parsers.TryGetValue(type, out var parser))
@@ -121,8 +122,8 @@ namespace McMaster.Extensions.CommandLineUtils.Abstractions
                 {
                     return null;
                 }
-                var method = typeof(ValueTupleValueParser).GetMethod(nameof(ValueTupleValueParser.Create)).MakeGenericMethod(type.GenericTypeArguments[1]);
-                return (IValueParser)method.Invoke(null, new object[] { innerParser });
+                var method = typeof(ValueTupleValueParser).GetMethod(nameof(ValueTupleValueParser.Create))?.MakeGenericMethod(type.GenericTypeArguments[1])!;
+                return (IValueParser)method.Invoke(null, new object[] { innerParser })!;
             }
 
             return null;

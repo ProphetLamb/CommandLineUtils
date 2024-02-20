@@ -79,7 +79,7 @@ namespace McMaster.Extensions.CommandLineUtils.Conventions
         {
             try
             {
-                var result = (Task)method.Invoke(instance, arguments);
+                var result = (Task)method.Invoke(instance, arguments)!;
                 if (result is Task<int> intResult)
                 {
                     return await intResult;
@@ -89,7 +89,11 @@ namespace McMaster.Extensions.CommandLineUtils.Conventions
             }
             catch (TargetInvocationException e)
             {
-                ExceptionDispatchInfo.Capture(e.InnerException).Throw();
+                if (e.InnerException is not null)
+                {
+                    ExceptionDispatchInfo.Capture(e.InnerException).Throw();
+                }
+                throw;
             }
 
             return 0;
@@ -99,7 +103,7 @@ namespace McMaster.Extensions.CommandLineUtils.Conventions
         {
             try
             {
-                var result = method.Invoke(instance, arguments);
+                var result = method.Invoke(instance, arguments)!;
                 if (method.ReturnType == typeof(int))
                 {
                     return (int)result;
@@ -107,7 +111,11 @@ namespace McMaster.Extensions.CommandLineUtils.Conventions
             }
             catch (TargetInvocationException e)
             {
-                ExceptionDispatchInfo.Capture(e.InnerException).Throw();
+                if (e.InnerException is not null)
+                {
+                    ExceptionDispatchInfo.Capture(e.InnerException).Throw();
+                }
+                throw;
             }
 
             return 0;
